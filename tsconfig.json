@@ -1,0 +1,20 @@
+{
+	"includes": ["source/**/*.ts"],
+	"exclude": ["node_modules", "dist"],
+	"compilerOptions": {
+		"baseUrl": ".",
+		"rootDir": "source",
+		"outDir": "dist",
+		"target": "es6",
+		"module": "es6",
+		"lib": ["es6", "esnext"],
+		"moduleResolution": "node",
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"paths": {
+			"#root/*": ["./source/*"]
+		}
+	}
+}
