@@ -37,7 +37,7 @@ export async function getTileInfo(
 		.map((element) => element.querySelector('a')?.textContent);
 	let volumeCountValue = metaElement
 		?.querySelector('p')
-		?.textContent?.replaceAll(/[^0-9]+/, '');
+		?.textContent?.replace(/[^0-9]+/g, '');
 	let volumeCount = parseInt(volumeCountValue || '') || undefined;
 
 	let tileInfo: TileInfo = {
