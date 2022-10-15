@@ -1,6 +1,9 @@
 import { TileKey } from './tileKey.js';
 
 export type TileInfo = TileKey & {
+	// Автор
+	authors: (string | undefined)[] | undefined;
+
 	// Русское название
 	titleRussian: string | undefined;
 
@@ -14,11 +17,14 @@ export type TileInfo = TileKey & {
 	description: string | undefined;
 
 	// Год выпуска
-	releaseYear: string | undefined;
+	releaseYears: (string | undefined)[] | undefined;
 
 	// Ссылки на изображения обложек
 	coverImageUrls: (string | undefined)[] | undefined;
 
 	// Жанры
 	genres: (string | undefined)[] | undefined;
+
+	// Количество томов
+	volumeCount: number | undefined;
 };

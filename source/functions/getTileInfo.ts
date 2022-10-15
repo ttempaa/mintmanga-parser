@@ -21,9 +21,12 @@ export async function getTileInfo(
 	let description = contentElement
 		?.querySelector('meta[itemprop="description"]')
 		?.getAttribute('content');
-	let releaseYear = metaElement
-		?.querySelector('.elem_year')
-		?.querySelector('a')?.textContent;
+	let authors = contentElement
+		?.querySelectorAll('.elem_author')
+		?.map((element) => element.querySelector('a')?.textContent);
+	let releaseYears = metaElement
+		?.querySelectorAll('.elem_year')
+		?.map((element) => element.querySelector('a')?.textContent);
 	let coverImageUrls = contentElement
 		?.querySelector('.subject-cover')
 		?.querySelector('.picture-fotorama')
@@ -32,16 +35,22 @@ export async function getTileInfo(
 	let genres = metaElement
 		?.querySelectorAll('.elem_genre')
 		.map((element) => element.querySelector('a')?.textContent);
+	let volumeCountValue = metaElement
+		?.querySelector('p')
+		?.textContent?.replaceAll(/[^0-9]+/, '');
+	let volumeCount = parseInt(volumeCountValue || '') || undefined;
 
 	let tileInfo: TileInfo = {
 		key,
+		authors,
 		titleRussian,
 		titleEnglish,
 		titleOriginal,
 		description,
-		releaseYear,
+		releaseYears,
 		genres,
 		coverImageUrls,
+		volumeCount,
 	};
 	return tileInfo;
 }
