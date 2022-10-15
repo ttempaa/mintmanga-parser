@@ -17,12 +17,16 @@ export async function getTileImageUrls(
 		?.querySelectorAll('script')[2];
 	if (!scriptElement) throw new Error(`Wrong page`);
 	let scriptRawCode = scriptElement?.childNodes[0]?.rawText;
+	if (!scriptRawCode) throw new Error(`Wrong raw code`);
 	let startIndex = scriptRawCode.indexOf('[[');
 	let endIndex = scriptRawCode.indexOf(']]') + 2;
 	let stringArray = scriptRawCode.substring(startIndex, endIndex).replaceAll("'", '"');
 	let parsedArray = JSON.parse(stringArray);
 	let urls = parsedArray.map((element: string[]) => element[0] + element[2]);
 	return {
-		key, volume, chapter, urls
+		key,
+		volume,
+		chapter,
+		urls,
 	};
 }
