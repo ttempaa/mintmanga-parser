@@ -3,12 +3,8 @@ import { TileInfo } from '#root/types/tileInfo.js';
 import nodefetch from 'node-fetch';
 import { parse as parseHtml } from 'node-html-parser';
 
-export async function getTileInfo(
-	key: string,
-	volume: number,
-	chapter: number
-): Promise<TileInfo> {
-	let requestUrl: string = baseUrl + `${key}/vol${volume}/${chapter}`;
+export async function getTileInfo(key: string): Promise<TileInfo> {
+	let requestUrl: string = baseUrl + `${key}`;
 	let response = await nodefetch(requestUrl);
 	let rawHtml = await response.text();
 	let rootElement = parseHtml(rawHtml);
@@ -35,10 +31,17 @@ export async function getTileInfo(
 	let genres = metaElement
 		?.querySelectorAll('.elem_genre')
 		.map((element) => element.querySelector('a')?.textContent);
-	let volumeCountValue = metaElement
-		?.querySelector('p')
-		?.textContent?.replace(/[^0-9]+/g, '');
-	let volumeCount = parseInt(volumeCountValue || '') || undefined;
+	let chaptersElement = contentElement
+		?.querySelector('#chapters-list')
+		?.querySelectorAll('.item-title');
+
+	let chapters = chaptersElement?.map((element) => {
+		let volume = element.getAttribute('data-vol');
+		let chapter = element.getAttribute('data-num');
+		if (chapter?.endsWith('0') && chapter !== '0') chapter = chapter.replace(/0$/, '');
+		else if (chapter?.endsWith('5')) chapter = chapter.replace(/5$/, '.5');
+		return { volume, chapter };
+	});
 
 	let tileInfo: TileInfo = {
 		key,
@@ -50,7 +53,7 @@ export async function getTileInfo(
 		releaseYears,
 		genres,
 		coverImageUrls,
-		volumeCount,
+		chapters,
 	};
 	return tileInfo;
 }

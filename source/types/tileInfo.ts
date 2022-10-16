@@ -1,4 +1,5 @@
 import { TileKey } from './tileKey.js';
+import { TileChapter } from './tileChapter.js';
 
 export type TileInfo = TileKey & {
 	// Автор
@@ -25,6 +26,6 @@ export type TileInfo = TileKey & {
 	// Жанры
 	genres: (string | undefined)[] | undefined;
 
-	// Количество томов
-	volumeCount: number | undefined;
+	// Список томов и глав
+	chapters: TileChapter[] | undefined;
 };
