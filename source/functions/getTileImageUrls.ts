@@ -7,7 +7,7 @@ export async function getTileImageUrls(
 	key: string,
 	volume: number,
 	chapter: number
-): Promise<TileImageUrls> {
+): Promise<TileImageUrls | null> {
 	let responseUrl: string = baseUrl + `${key}/vol${volume}/${chapter}`;
 	let response = await nodefetch(responseUrl);
 	let rawHtml = await response.text();
@@ -15,9 +15,9 @@ export async function getTileImageUrls(
 	let scriptElement = rootElement
 		?.querySelectorAll('.reader-controller.pageBlock')[1]
 		?.querySelectorAll('script')[2];
-	if (!scriptElement) throw new Error(`Wrong page`);
+	if (!scriptElement) return null;
 	let scriptRawCode = scriptElement?.childNodes[0]?.rawText;
-	if (!scriptRawCode) throw new Error(`Wrong raw code`);
+	if (!scriptRawCode) return null;
 	let startIndex = scriptRawCode.indexOf('[[');
 	let endIndex = scriptRawCode.indexOf(']]') + 2;
 	let stringArray = scriptRawCode.substring(startIndex, endIndex).replaceAll("'", '"');

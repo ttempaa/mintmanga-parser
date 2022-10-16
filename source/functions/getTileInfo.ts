@@ -4,7 +4,7 @@ import nodefetch from 'node-fetch';
 import { parse as parseHtml } from 'node-html-parser';
 
 export async function getTileInfo(key: string): Promise<TileInfo> {
-	let requestUrl: string = baseUrl + `${key}`;
+	let requestUrl: string = baseUrl + key;
 	let response = await nodefetch(requestUrl);
 	let rawHtml = await response.text();
 	let rootElement = parseHtml(rawHtml);

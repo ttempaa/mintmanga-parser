@@ -7,7 +7,7 @@ import nodefetch from 'node-fetch';
 export async function getTiles(
 	page: number = 0,
 	sortType: ListSortType = 'votes'
-): Promise<TileKey[]> {
+): Promise<TileKey[] | null> {
 	let itemsInPage = 70;
 	let offset: number = page * itemsInPage;
 	let requestUrl: string = baseUrl + `list?sortType=${sortType}&offset=${offset}`;
@@ -15,9 +15,9 @@ export async function getTiles(
 	let rawHtml = await response.text();
 
 	let rootElement = parseHtml(rawHtml as string);
-	if (!rootElement) throw new Error('Wrong root html element');
+	if (!rootElement) return null;
 	let tileElements = rootElement.querySelectorAll('.tile');
-	if (!tileElements) throw new Error('Wrong tiles html elements');
+	if (!tileElements) return null;
 
 	let tileKeys: TileKey[] = [];
 	for (let tile of tileElements) {
